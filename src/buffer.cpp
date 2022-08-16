@@ -1,4 +1,4 @@
-#include "buffer.hpp"
+#include "glutils/buffer.hpp"
 
 namespace glutils {
 

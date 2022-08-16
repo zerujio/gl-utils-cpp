@@ -3,4 +3,3 @@ project(GLUtils)
 
 add_subdirectory(lib)
 add_subdirectory(src)
-target_include_directories(glutils PUBLIC include)
