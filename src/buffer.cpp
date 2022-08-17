@@ -2,44 +2,48 @@
 
 namespace glutils {
 
-    GLint Buffer::getProperty(Buffer::Property property) const {
+    GLint Buffer::getParameter(Buffer::Parameter param) const {
         GLint value;
-        gl.GetNamedBufferParameteriv(getName(), static_cast<GLenum>(property), &value);
+        gl.GetNamedBufferParameteriv(getName(), static_cast<GLenum>(param), &value);
         return value;
     }
 
-    GLint64 Buffer::getProperty64(Buffer::Property property) const {
+    GLint64 Buffer::getParameter64(Buffer::Parameter param) const {
         GLint64 value;
-        gl.GetNamedBufferParameteri64v(getName(), static_cast<GLenum>(property), &value);
+        gl.GetNamedBufferParameteri64v(getName(), static_cast<GLenum>(param), &value);
         return value;
     }
 
     GLenum Buffer::getAccess() const {
-        return getProperty(Property::Access);
+        return getParameter(Parameter::Access);
     }
 
     GLbitfield Buffer::getAccessFlags() const {
-        return getProperty(Property::AccessFlags);
+        return getParameter(Parameter::AccessFlags);
     }
 
     bool Buffer::getImmutable() const {
-        return getProperty(Property::Immutable);
+        return getParameter(Parameter::Immutable);
     }
 
     bool Buffer::getMapped() const {
-        return getProperty(Property::Mapped);
+        return getParameter(Parameter::Mapped);
     }
 
-    GLsizeiptr Buffer::getMappedLength() const {
-        return getProperty(Property::MapLength);
+    GLsizeiptr Buffer::getMapLength() const {
+        return getParameter(Parameter::MapLength);
     }
 
-    GLintptr Buffer::getMappedOffset() const {
-        return getProperty(Property::MapOffset);
+    GLintptr Buffer::getMapOffset() const {
+        return getParameter(Parameter::MapOffset);
     }
 
     GLsizeiptr Buffer::getSize() const {
-        return getProperty(Property::Size);
+        return getParameter(Parameter::Size);
+    }
+
+    GLbitfield Buffer::getStorageFlags() const {
+        return getParameter(Parameter::StorageFlags);
     }
 
     void Buffer::allocateData(GLsizeiptr size, Buffer::Usage usage, const void *init_data) const {

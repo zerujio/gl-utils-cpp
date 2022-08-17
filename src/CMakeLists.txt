@@ -1,4 +1,4 @@
-add_library(glutils STATIC)
+add_library(glutils STATIC debug.cpp)
 target_sources(glutils PRIVATE
         gl.cpp
         buffer.cpp)
