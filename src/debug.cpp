@@ -5,7 +5,8 @@
 
 namespace glutils {
 
-    void debugCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char *message, const void *user_ptr)
+    void debugCallback(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length,
+                       const char *message, const void *user_ptr)
     {
         const char* src_str;
         switch (source) {
@@ -53,12 +54,12 @@ namespace glutils {
 
         auto & out = severity == GL_DEBUG_SEVERITY_HIGH ? std::cerr : std::cout;
 
-        out << "\n[OpenGL Debug Message] (" << id << ")"
+        out << "[OpenGL Debug Message] (" << id << ")"
             << "\nSource:   " << src_str
             << "\nType:     " << type_str
             << "\nSeverity: " << severity_str
             << "\nMessage:  " << message
-            << "\n\n";
+            << "\n";
     }
 
     void enableDebugCallback() {

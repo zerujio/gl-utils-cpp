@@ -5,39 +5,58 @@
 
 namespace glutils {
 
+    using GLCreateProc = void (*) (GLsizei, GLuint *);
+    using GLDeleteProc = void (*) (GLsizei, const GLuint *);
+    using GLIsProc = GLboolean (*) (GLuint);
+
     /// A wrapper around an OpenGL integer name providing an object-oriented interface.
-    template <auto Create, auto Destroy, auto Validate>
-    class Handle {
+    template <GLIsProc GladGLContext::* Is>
+    class BaseHandle {
     public:
-
-        /// A handle that references the zero object (i.e. a null pointer).
-        Handle() = default;
-
-        /// Create a new OpenGL object and return a handle to it.
-        template <class... Args>
-        static Handle create(Args... args) {
-            return Create(args...);
-        }
-
-        /// Destroy the OpenGL object referenced by the @p handle.
-        static void destroy(Handle handle) {
-            Destroy(m_name);
-        }
+        BaseHandle() = default;
 
         /// Check if the handle references a valid object.
-        [[nodiscard]] bool validate() const {
-            return Validate(m_name);
+        [[nodiscard]]
+        auto validate() const -> bool
+        {
+            return (gl.*Is)(m_name);
         }
 
         /// Retrieve the underlying integer name.
-        [[nodiscard]] GLuint getName() const {
+        [[nodiscard]]
+        auto getName() const -> GLuint
+        {
             return m_name;
         }
 
-    private:
-        Handle(GLuint name) : m_name(name) {}
+    protected:
+        explicit BaseHandle(GLuint name) : m_name(name) {}
 
+    private:
         GLuint m_name {0};
+    };
+
+    template <class HandleType,
+            GLCreateProc GladGLContext::* Create,
+            GLDeleteProc GladGLContext::* Delete,
+            GLIsProc GladGLContext::* Is>
+    class Handle : public BaseHandle<Is>
+    {
+    public:
+        /// Create a new OpenGL object and return a handle to it.
+        [[nodiscard]]
+        static auto create() -> HandleType
+        {
+            HandleType handle;
+            (gl.*Create)(1, reinterpret_cast<GLuint *>(&handle));
+            return handle;
+        }
+
+        /// Destroy the OpenGL object referenced by the @p handle.
+        static void destroy(Handle handle)
+        {
+            (gl.*Delete)(1, reinterpret_cast<const GLuint *>(&handle));
+        }
     };
 
 } // glutils

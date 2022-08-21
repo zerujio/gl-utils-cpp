@@ -26,7 +26,8 @@ namespace glutils {
         /**
          * @param other Another object guard. Will be left managing no object.
          */
-        Guard(Guard && other) : m_handle(other.m_handle) {
+        Guard(Guard && other)  noexcept : m_handle(other.m_handle)
+        {
             other.m_handle = HandleType();
         }
 
@@ -36,13 +37,31 @@ namespace glutils {
          * @param other Another object guard. Will be left managing no object.
          * @return this object.
          */
-        Guard& operator=(Guard && other) noexcept {
+        auto operator=(Guard && other) noexcept -> Guard&
+                {
             HandleType::destroy(m_handle);
             m_handle = other.m_handle;
             other.m_handle = HandleType();
             return *this;
         }
 
+        /// Get handle to object.
+        auto getHandle() const -> HandleType
+        {
+            return m_handle;
+        }
+
+        /// Same as getHandle()
+        auto operator*() const -> HandleType
+        {
+            return m_handle;
+        }
+
+        /// Access handle.
+        auto operator->() const -> const HandleType *
+        {
+            return &m_handle;
+        }
     private:
         HandleType m_handle;
     };

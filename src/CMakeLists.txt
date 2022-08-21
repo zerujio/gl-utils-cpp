@@ -1,6 +1,9 @@
-add_library(glutils STATIC debug.cpp)
-target_sources(glutils PRIVATE
+add_library(glutils STATIC
         gl.cpp
-        buffer.cpp)
+        debug.cpp
+        program.cpp
+        shader.cpp
+        buffer.cpp
+        vertex_array.cpp)
 target_include_directories(glutils PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(glutils PUBLIC glad)

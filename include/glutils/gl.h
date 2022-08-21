@@ -6,10 +6,10 @@
 namespace glutils {
 
     /// Holds OpenGL functions.
-    thread_local GladGLContext gl;
+    extern thread_local GladGLContext gl;
 
     /// Loads functions from the current OpenGL context.
-    void loadGLContext(GLADloadfunc load_func);
+    auto loadGLContext(GLADloadfunc load_func) -> int;
 
 } // glutils
 

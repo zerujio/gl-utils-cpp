@@ -5,20 +5,10 @@
 
 namespace glutils {
 
-    namespace impl {
-        /// Wraps glCreateBuffers().
-        GLuint createBuffer();
-
-        /// Wraps glDeleteBuffers().
-        void destroyBuffer(GLuint name);
-
-        /// Wraps glIsBuffer().
-        bool validateBuffer(GLuint name);
-    }
-
 
     /// Wraps "NamedBuffer" OpenGL functions.
-    class Buffer : Handle<impl::createBuffer, impl::destroyBuffer, impl::validateBuffer> {
+    class Buffer : public Handle<Buffer, &GladGLContext::CreateBuffers, &GladGLContext::DeleteBuffers, &GladGLContext::IsBuffer>
+{
     public:
 
         enum class Parameter {
@@ -40,10 +30,12 @@ namespace glutils {
          * @param pname the enum value of the parameter to query.
          * @return the current value of the parameter.
          */
-        [[nodiscard]] GLint getParameter(Parameter pname) const;
+        [[nodiscard]]
+        auto getParameter(Parameter pname) const -> GLint;
 
         /// Same as getParameter(), but returns a 64 bit integer.
-        [[nodiscard]] GLint64 getParameter64(Parameter pname) const;
+        [[nodiscard]]
+        auto getParameter64(Parameter pname) const -> GLint64;
 
         /// Access modes for glMapBuffer.
         enum class AccessMode {
@@ -83,7 +75,8 @@ namespace glutils {
          * @return the access policy set while mapping the buffer object (the value of the @p access parameter bitfield
          * passed to glMapBufferRange).
          */
-        [[nodiscard]] AccessFlags getAccessFlags() const;
+        [[nodiscard]]
+        auto getAccessFlags() const -> AccessFlags;
 
         /// Query the GL_BUFFER_IMMUTABLE_STORAGE parameter.
         /**
@@ -91,7 +84,8 @@ namespace glutils {
          *
          * @return boolean flag indicating whether the buffer object is immutable.
          */
-        [[nodiscard]] bool getImmutable() const;
+        [[nodiscard]]
+        auto getImmutable() const -> bool;
 
         /// Query the GL_BUFFER_MAPPED parameter.
         /**
@@ -99,7 +93,8 @@ namespace glutils {
          *
          * @return a flag indicating whether the buffer object is currently mapped.
          */
-        [[nodiscard]] bool getMapped() const;
+        [[nodiscard]]
+        auto getMapped() const -> bool;
 
         /// Query the GL_BUFFER_MAP_LENGTH parameter.
         /**
@@ -107,14 +102,16 @@ namespace glutils {
          *
          * @return the length of the mapping into the buffer object established with glMapBuffer*.
          */
-        [[nodiscard]] GLsizeiptr getMapLength() const;
+        [[nodiscard]]
+        auto getMapLength() const -> GLsizeiptr;
 
         /// Query the GL_BUFFER_MAP_OFFSET parameter.
         /**
          * The initial value is 0.
          * @return the size of the buffer object, measured in bytes.
          */
-        [[nodiscard]] GLintptr getMapOffset() const;
+        [[nodiscard]]
+        auto getMapOffset() const -> GLintptr;
 
         /// Query the GL_BUFFER_SIZE parameter.
         /**
@@ -122,7 +119,8 @@ namespace glutils {
          *
          * @return the size of the buffer object, measured in bytes. The
          */
-        [[nodiscard]] GLsizeiptr getSize() const;
+        [[nodiscard]]
+        auto getSize() const -> GLsizeiptr;
 
         enum class Usage {
             static_draw     = GL_STATIC_DRAW,
@@ -142,7 +140,8 @@ namespace glutils {
          *
          * @return the buffer object's usage pattern.
          */
-        [[nodiscard]] Usage getUsage() const;
+        [[nodiscard]]
+        auto getUsage() const -> Usage;
 
         enum class StorageFlags {
             dynamic_storage = GL_DYNAMIC_STORAGE_BIT,
@@ -163,7 +162,8 @@ namespace glutils {
          *
          * @return a bitfield indicating the storage flags for the buffer object.
          */
-        [[nodiscard]] StorageFlags getStorageFlags() const;
+        [[nodiscard]]
+        auto getStorageFlags() const -> StorageFlags;
 
         /// (Re)allocate and optionally initialize mutable storage.
         /**
@@ -207,7 +207,8 @@ namespace glutils {
          * @param access Access policy.
          * @return a valid pointer to the mapped buffer memory, or a null pointer if an error occurred.
          */
-        [[nodiscard]] void *map(AccessMode access) const;
+        [[nodiscard]]
+        auto map(AccessMode access) const -> void *;
 
         /// Map a range within the buffer to the host address space.
         /**
@@ -217,7 +218,8 @@ namespace glutils {
          * @param access access policy flags.
          * @return a valid pointer to the mapped buffer memory, or a null pointer if an error occurred.
          */
-        [[nodiscard]] void *mapRange(GLintptr offset, GLsizeiptr length, AccessFlags access) const;
+        [[nodiscard]]
+        auto mapRange(GLintptr offset, GLsizeiptr length, AccessFlags access) const -> void *;
 
         /// Unmap this buffer.
         /**
@@ -246,7 +248,8 @@ namespace glutils {
         void read(GLsizeiptr size, void *data) const;
 
         /// Map @p length bytes of device memory to the host address space, starting at offset .
-        void *map(GLsizeiptr length, Buffer::AccessFlags access) const;
+        [[nodiscard]]
+        auto map(GLsizeiptr length, Buffer::AccessFlags access) const -> void *;
     };
 
     /// Specifies a memory range within a buffer object.
@@ -269,7 +272,8 @@ namespace glutils {
         void read(void *data) const;
 
         /// Map this memory range to the host memory address space.
-        void *map(Buffer::AccessFlags access) const;
+        [[nodiscard]]
+        auto map(Buffer::AccessFlags access) const -> void *;
     };
 
 } // glutils

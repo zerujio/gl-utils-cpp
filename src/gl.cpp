@@ -1,5 +1,11 @@
 #include "glutils/gl.h"
 
-void glutils::loadGLContext(GLADloadfunc load_func) {
-    gladLoadGLContext(&gl, load_func);
-}
+namespace glutils {
+
+    thread_local GladGLContext gl;
+
+    int loadGLContext(GLADloadfunc load_func) {
+        return gladLoadGLContext(&gl, load_func);
+    }
+
+} // glutils
