@@ -3,6 +3,8 @@
 
 #include "handle.hpp"
 
+#include <type_traits>
+
 namespace glutils {
 
 
@@ -275,6 +277,15 @@ namespace glutils {
         [[nodiscard]]
         auto map(Buffer::AccessFlags access) const -> void *;
     };
+
+    auto operator|(Buffer::AccessFlags l, Buffer::AccessFlags r) -> Buffer::AccessFlags;
+
+    auto operator&(Buffer::AccessFlags l, Buffer::AccessFlags r) -> Buffer::AccessFlags;
+
+    auto operator|(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags;
+
+    auto operator&(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags;
+
 
 } // glutils
 

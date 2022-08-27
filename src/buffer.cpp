@@ -130,4 +130,38 @@ namespace glutils {
         return BufferOffset::map(size, access);
     }
 
+    template<class T>
+    auto enumOR(T l, T r) -> T
+    {
+        return static_cast<T>(static_cast<std::underlying_type_t<T>>(l)
+                              | static_cast<std::underlying_type_t<T>>(r));
+    }
+
+    template<class T>
+    auto enumAND(T l, T r) -> T
+    {
+        return static_cast<T>(static_cast<std::underlying_type_t<T>>(l)
+                              & static_cast<std::underlying_type_t<T>>(r));
+    }
+
+    auto operator|(Buffer::AccessFlags l, Buffer::AccessFlags r) -> Buffer::AccessFlags
+    {
+        return enumOR(l, r);
+    }
+
+    auto operator&(Buffer::AccessFlags l, Buffer::AccessFlags r) -> Buffer::AccessFlags
+    {
+        return enumAND(l, r);
+    }
+
+    auto operator|(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags
+    {
+        return enumOR(l, r);
+    }
+
+    auto operator&(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags
+    {
+        return enumAND(l, r);
+    }
+
 } // glutils
