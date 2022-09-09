@@ -147,7 +147,7 @@ namespace glutils {
 
         enum class StorageFlags {
             dynamic_storage = GL_DYNAMIC_STORAGE_BIT,
-            map_read        = GL_DYNAMIC_READ,
+            map_read        = GL_MAP_READ_BIT,
             map_write       = GL_MAP_WRITE_BIT,
             map_persistent  = GL_MAP_PERSISTENT_BIT,
             map_coherent    = GL_MAP_COHERENT_BIT,
