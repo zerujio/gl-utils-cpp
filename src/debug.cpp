@@ -1,5 +1,5 @@
 #include <glutils/debug.hpp>
-#include <glutils/gl.h>
+#include <glutils/gl.hpp>
 
 #include <iostream>
 

@@ -1,4 +1,7 @@
 #include "glutils/buffer.hpp"
+#include "glutils/gl.hpp"
+
+#include <type_traits>
 
 namespace glutils {
 
@@ -94,6 +97,18 @@ namespace glutils {
     void Buffer::unmap() const
     {
         gl.UnmapNamedBuffer(getName());
+    }
+
+    auto Buffer::create() -> Buffer
+    {
+        GLuint name;
+        gl.CreateBuffers(1, &name);
+        return {name};
+    }
+
+    void Buffer::destroy(Buffer buffer)
+    {
+        gl.DeleteBuffers(1, &buffer.m_name);
     }
 
     // struct BufferOffset

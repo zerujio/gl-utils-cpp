@@ -5,18 +5,17 @@
 
 namespace glutils {
 
-    class Shader : public BaseHandle<&GladGLContext::IsShader>
+    class Shader final : public Handle
     {
+        using Handle::Handle;
     public:
-        Shader() = default;
-
         enum class Type {
-            compute         = GL_COMPUTE_SHADER,
-            vertex          = GL_VERTEX_SHADER,
-            tess_control    = GL_TESS_CONTROL_SHADER,
-            tess_evaluation = GL_TESS_EVALUATION_SHADER,
-            geometry        = GL_GEOMETRY_SHADER,
-            fragment        = GL_FRAGMENT_SHADER
+            compute         = 0x91B9,
+            vertex          = 0x8B31,
+            tess_control    = 0x8E88,
+            tess_evaluation = 0x8E87,
+            geometry        = 0x8DD9,
+            fragment        = 0x8B30
         };
 
         static auto create(Type type) -> Shader;
@@ -50,11 +49,11 @@ namespace glutils {
 
         enum class Parameter
         {
-            type            = GL_SHADER_TYPE,
-            delete_status   = GL_DELETE_STATUS,
-            compile_status  = GL_COMPILE_STATUS,
-            info_log_length = GL_INFO_LOG_LENGTH,
-            source_length   = GL_SHADER_SOURCE_LENGTH
+            type            = 0x8B4F,
+            delete_status   = 0x8B80,
+            compile_status  = 0x8B81,
+            info_log_length = 0x8B84,
+            source_length   = 0x8B88
         };
 
         [[nodiscard]]
@@ -62,9 +61,6 @@ namespace glutils {
 
         /// glGetShaderInfoLog - Returns the information log for a shader object.
         void getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const;
-
-    private:
-        using BaseHandle::BaseHandle;
     };
 
 } // glutils

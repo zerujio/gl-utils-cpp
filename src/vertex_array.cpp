@@ -1,6 +1,19 @@
 #include "glutils/vertex_array.hpp"
+#include "glutils/gl.hpp"
 
 namespace glutils {
+    auto VertexArray::create() -> VertexArray
+    {
+        GLuint name;
+        gl.CreateVertexArrays(1, &name);
+        return {name};
+    }
+
+    void VertexArray::destroy(glutils::VertexArray vertex_array)
+    {
+        gl.DeleteVertexArrays(1, &vertex_array.m_name);
+    }
+
     void VertexArray::bind() const
     {
         gl.BindVertexArray(getName());

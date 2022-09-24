@@ -1,7 +1,7 @@
 #ifndef GLUTILS_GUARD_HPP
 #define GLUTILS_GUARD_HPP
 
-#include "gl.h"
+#include "gl_types.hpp"
 
 namespace glutils {
 

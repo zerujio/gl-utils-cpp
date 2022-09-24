@@ -3,26 +3,27 @@
 
 #include "handle.hpp"
 
-#include <type_traits>
-
 namespace glutils {
 
 
     /// Wraps "NamedBuffer" OpenGL functions.
-    class Buffer : public Handle<Buffer, &GladGLContext::CreateBuffers, &GladGLContext::DeleteBuffers, &GladGLContext::IsBuffer>
+    class Buffer : public Handle
 {
+        using Handle::Handle;
     public:
+        static auto create() -> Buffer;
+        static void destroy(Buffer buffer);
 
         enum class Parameter {
-            Access      = GL_BUFFER_ACCESS,
-            AccessFlags = GL_BUFFER_ACCESS_FLAGS,
-            Immutable   = GL_BUFFER_IMMUTABLE_STORAGE,
-            Mapped      = GL_BUFFER_MAPPED,
-            MapLength   = GL_BUFFER_MAP_LENGTH,
-            MapOffset   = GL_BUFFER_MAP_OFFSET,
-            Size        = GL_BUFFER_SIZE,
-            StorageFlags= GL_BUFFER_STORAGE_FLAGS,
-            Usage = GL_BUFFER_USAGE
+            Access          = 0x88BB,
+            AccessFlags     = 0x911F,
+            Immutable       = 0x821F,
+            Mapped          = 0x88BC,
+            MapLength       = 0x9120,
+            MapOffset       = 0x9121,
+            Size            = 0x8764,
+            StorageFlags    = 0x8220,
+            Usage           = 0x8765
         };
 
         /// Return parameters of a buffer object
@@ -41,9 +42,9 @@ namespace glutils {
 
         /// Access modes for glMapBuffer.
         enum class AccessMode {
-            read_only   = GL_READ_ONLY,
-            write_only  = GL_WRITE_ONLY,
-            read_write  = GL_READ_WRITE
+            read_only       = 0x88B8,
+            write_only      = 0x88B9,
+            read_write      = 0x88BA
         };
 
         /// Query the GL_BUFFER_ACCESS parameter.
@@ -58,14 +59,14 @@ namespace glutils {
 
         /// Access flags for glMapBufferRange.
         enum class AccessFlags {
-            read        = GL_MAP_READ_BIT,
-            write       = GL_MAP_WRITE_BIT,
-            persistent  = GL_MAP_PERSISTENT_BIT,
-            coherent    = GL_MAP_COHERENT_BIT,
-            invalidate_range    = GL_MAP_INVALIDATE_RANGE_BIT,
-            invalidate_buffer   = GL_MAP_INVALIDATE_BUFFER_BIT,
-            flush_explicit      = GL_MAP_FLUSH_EXPLICIT_BIT,
-            unsynchronized      = GL_MAP_UNSYNCHRONIZED_BIT
+            read                = 0x0001,
+            write               = 0x0002,
+            persistent          = 0x0040,
+            coherent            = 0x0080,
+            invalidate_range    = 0x0004,
+            invalidate_buffer   = 0x0008,
+            flush_explicit      = 0x0010,
+            unsynchronized      = 0x0020
         };
 
         /// Query the GL_BUFFER_ACCESS_FLAGS parameter.
@@ -125,15 +126,15 @@ namespace glutils {
         auto getSize() const -> GLsizeiptr;
 
         enum class Usage {
-            static_draw     = GL_STATIC_DRAW,
-            static_read     = GL_STATIC_READ,
-            static_copy     = GL_STATIC_COPY,
-            dynamic_draw    = GL_DYNAMIC_DRAW,
-            dynamic_read    = GL_DYNAMIC_READ,
-            dynamic_copy    = GL_DYNAMIC_COPY,
-            stream_draw     = GL_STREAM_DRAW,
-            stream_read     = GL_STREAM_READ,
-            stream_copy     = GL_STREAM_COPY
+            static_draw     = 0x88E4,
+            static_read     = 0x88E5,
+            static_copy     = 0x88E6,
+            dynamic_draw    = 0x88E8,
+            dynamic_read    = 0x88E9,
+            dynamic_copy    = 0x88EA,
+            stream_draw     = 0x88E0,
+            stream_read     = 0x88E1,
+            stream_copy     = 0x88E2
         };
 
         /// Query the GL_BUFFER_USAGE parameter.
@@ -146,12 +147,12 @@ namespace glutils {
         auto getUsage() const -> Usage;
 
         enum class StorageFlags {
-            dynamic_storage = GL_DYNAMIC_STORAGE_BIT,
-            map_read        = GL_MAP_READ_BIT,
-            map_write       = GL_MAP_WRITE_BIT,
-            map_persistent  = GL_MAP_PERSISTENT_BIT,
-            map_coherent    = GL_MAP_COHERENT_BIT,
-            client_storage  = GL_CLIENT_STORAGE_BIT,
+            dynamic_storage = 0x0100,
+            map_read        = 0x0001,
+            map_write       = 0x0002,
+            map_persistent  = 0x0040,
+            map_coherent    = 0x0080,
+            client_storage  = 0x0200,
         };
 
         /// Query the GL_BUFFER_STORAGE_FLAGS parameter.

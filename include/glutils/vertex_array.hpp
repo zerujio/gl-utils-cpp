@@ -6,14 +6,12 @@
 
 namespace glutils {
 
-    class VertexArray :
-            public Handle<VertexArray,
-            &GladGLContext::CreateVertexArrays,
-            &GladGLContext::DeleteVertexArrays,
-            &GladGLContext::IsVertexArray>
+    class VertexArray final : public Handle
     {
-    public:
         using Handle::Handle;
+    public:
+        static auto create() -> VertexArray;
+        static void destroy(VertexArray vertex_array);
 
         /// glBindVertexArray — bind a vertex array object.
         /**
@@ -76,27 +74,27 @@ namespace glutils {
 
         enum class AttribSize
         {
-            one = 1,
-            two = 2,
-            three = 3,
-            four = 4
+            one     = 1,
+            two     = 2,
+            three   = 3,
+            four    = 4
         };
 
         enum class AttribType
         {
-            byte_   = GL_BYTE,
-            ubyte_  = GL_UNSIGNED_BYTE,
-            short_  = GL_SHORT,
-            ushort_ = GL_UNSIGNED_SHORT,
-            int_    = GL_INT,
-            uint_   = GL_UNSIGNED_INT,
-            fixed_  = GL_FIXED,
-            float_  = GL_FLOAT,
-            half_float_ = GL_HALF_FLOAT,
-            double_ = GL_DOUBLE,
-            int_2_10_10_10_rev  = GL_INT_2_10_10_10_REV,
-            uint_2_10_10_10_rev = GL_UNSIGNED_INT_2_10_10_10_REV,
-            uint_10f_11f_11f_rev= GL_UNSIGNED_INT_10F_11F_11F_REV
+            byte_                   = 0x1400,
+            ubyte_                  = 0x1401,
+            short_                  = 0x1402,
+            ushort_                 = 0x1403,
+            int_                    = 0x1404,
+            uint_                   = 0x1405,
+            fixed_                  = 0x140C,
+            float_                  = 0x1406,
+            half_float_             = 0x140B,
+            double_                 = 0x140A,
+            int_2_10_10_10_rev      = 0x8D9F,
+            uint_2_10_10_10_rev     = 0x8368,
+            uint_10f_11f_11f_rev    = 0x8C3B
         };
 
         /// glVertexArrayAttribFormat — specify the organization of vertex arrays.

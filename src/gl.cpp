@@ -1,4 +1,4 @@
-#include "glutils/gl.h"
+#include "glutils/gl.hpp"
 
 namespace glutils {
 

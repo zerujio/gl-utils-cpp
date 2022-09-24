@@ -10,7 +10,6 @@ namespace glutils {
 
     /// Loads functions from the current OpenGL context.
     auto loadGLContext(GLADloadfunc load_func) -> int;
-
 } // glutils
 
 #endif //GLUTILS_GL_H

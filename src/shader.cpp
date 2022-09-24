@@ -1,4 +1,5 @@
 #include "glutils/shader.hpp"
+#include "glutils/gl.hpp"
 
 namespace glutils {
 

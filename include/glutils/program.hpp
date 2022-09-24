@@ -6,13 +6,11 @@
 
 namespace glutils {
 
-    class Program : public BaseHandle<&GladGLContext::IsProgram>
+    class Program : public Handle
     {
+        using Handle::Handle;
     public:
-        Program() = default;
-
         static auto create() -> Program;
-
         static void destroy(Program program);
 
         /// Installs a program object as part of current rendering state. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUseProgram.xhtml
@@ -41,26 +39,26 @@ namespace glutils {
 
         enum class Parameter
         {
-            delete_status                   = GL_DELETE_STATUS,
-            link_status                     = GL_LINK_STATUS,
-            validate_status                 = GL_VALIDATE_STATUS,
-            info_log_length                 = GL_INFO_LOG_LENGTH,
-            attached_shaders                = GL_ATTACHED_SHADERS,
-            active_atomic_counter_buffers   = GL_ACTIVE_ATOMIC_COUNTER_BUFFERS,
-            active_attributes               = GL_ACTIVE_ATTRIBUTES,
-            active_attribute_max_length     = GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
-            active_uniforms                 = GL_ACTIVE_UNIFORMS,
-            active_uniform_blocks           = GL_ACTIVE_UNIFORM_BLOCKS,
-            active_uniform_block_max_name_length = GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH,
-            active_uniform_max_length       = GL_ACTIVE_UNIFORM_MAX_LENGTH,
-            compute_work_group_size         = GL_COMPUTE_WORK_GROUP_SIZE,
-            program_binary_length           = GL_PROGRAM_BINARY_LENGTH,
-            transform_feedback_buffer_mode  = GL_TRANSFORM_FEEDBACK_BUFFER_MODE,
-            transform_feedback_varyings     = GL_TRANSFORM_FEEDBACK_VARYINGS,
-            transform_feedback_varying_max_length = GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH,
-            geometry_vertices_out           = GL_GEOMETRY_VERTICES_OUT,
-            geometry_input_type             = GL_GEOMETRY_INPUT_TYPE,
-            geometry_output_type            = GL_GEOMETRY_OUTPUT_TYPE
+            delete_status                   = 0x8B80,
+            link_status                     = 0x8B82,
+            validate_status                 = 0x8B83,
+            info_log_length                 = 0x8B84,
+            attached_shaders                = 0x8B85,
+            active_atomic_counter_buffers   = 0x92D9,
+            active_attributes               = 0x8B89,
+            active_attribute_max_length     = 0x8B8A,
+            active_uniforms                 = 0x8B86,
+            active_uniform_blocks           = 0x8A36,
+            active_uniform_block_max_name_length = 0x8A35,
+            active_uniform_max_length       = 0x8B87,
+            compute_work_group_size         = 0x8267,
+            program_binary_length           = 0x8741,
+            transform_feedback_buffer_mode  = 0x8C7F,
+            transform_feedback_varyings     = 0x8C83,
+            transform_feedback_varying_max_length = 0x8C76,
+            geometry_vertices_out           = 0x8916,
+            geometry_input_type             = 0x8917,
+            geometry_output_type            = 0x8918
         };
 
         /// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetProgramInfoLog.xhtml
@@ -94,10 +92,6 @@ namespace glutils {
 
         /// query the name of an indexed resource within a program. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetProgramResourceName.xhtml
         auto getResourceName(GLenum interface, GLuint index, GLsizei buf_size, GLsizei * length, char * name) const;
-
-
-    private:
-        using BaseHandle::BaseHandle;
     };
 
 } // glutils
