@@ -38,13 +38,14 @@ namespace glutils {
     std::string Shader::getInfoLog() const
     {
         const auto log_length = getParameter(Parameter::info_log_length);
-        if (log_length)
-        {
-            std::string log (log_length, '\0');
-            getInfoLog(log_length, nullptr, log.data());
-            return log;
-        }
-        return {};
+
+        if (log_length <= 0)
+            return {};
+
+        std::string log (log_length, '\0');
+        getInfoLog(log_length, nullptr, log.data());
+
+        return log;
     }
 
 

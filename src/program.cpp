@@ -63,9 +63,14 @@ namespace glutils {
         gl.UseProgram(getName());
     }
 
-    void Program::setBlockBinding(GLuint index, GLuint binding) const
+    void Program::setUniformBlockBinding(GLuint index, GLuint binding) const
     {
         gl.UniformBlockBinding(getName(), index, binding);
+    }
+
+    void Program::setShaderStorageBlockBinding(GLuint block_index, GLuint binding) const
+    {
+        gl.ShaderStorageBlockBinding(getName(), block_index, binding);
     }
 
     void Program::link() const
@@ -81,6 +86,19 @@ namespace glutils {
     void Program::detachShader(Shader shader) const
     {
         gl.DetachShader(getName(), shader.getName());
+    }
+
+    std::string Program::getInfoLog() const
+    {
+        const auto len = getParameter(Program::Parameter::info_log_length);
+
+        if (len <= 0)
+            return {};
+
+        std::string log(len, '\n');
+        getInfoLog(len, nullptr, log.data());
+
+        return log;
     }
 
 } // glutils

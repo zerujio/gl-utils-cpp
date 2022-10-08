@@ -20,7 +20,10 @@ namespace glutils {
         void link() const;
 
         /// assign a binding point to an active uniform block. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniformBlockBinding.xhtml
-        void setBlockBinding(GLuint index, GLuint binding) const;
+        void setUniformBlockBinding(GLuint block_index, GLuint binding) const;
+
+        /// glShaderStorageBlockBinding - change an active shader storage block binding. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glShaderStorageBlockBinding.xhtml
+        void setShaderStorageBlockBinding(GLuint block_index, GLuint binding) const;
 
         /// glBindAttribLocation — Associates a generic vertex attribute index with a named attribute variable.
         /**
@@ -67,6 +70,8 @@ namespace glutils {
 
         /// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetProgramInfoLog.xhtml
         void getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const;
+
+        std::string getInfoLog() const;
 
         /// query a property of an interface in a program (https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetProgramInterface.xhtml)
         [[nodiscard]]
