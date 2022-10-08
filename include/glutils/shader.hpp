@@ -3,6 +3,8 @@
 
 #include "handle.hpp"
 
+#include <string>
+
 namespace glutils {
 
     class Shader final : public Handle
@@ -42,7 +44,19 @@ namespace glutils {
          *                  the shader.
          * @param length    Specifies an array of string lengths.
          */
-        void setSource(GLsizei count, const GLchar **string, const GLint *length = nullptr) const;
+        void setSource(GLsizei count, const GLchar **strings, const GLint *length = nullptr) const;
+
+        /// setSource overload taking a single c-string.
+        void setSource(const GLchar *string, const GLint *length = nullptr) const
+        {
+            setSource(1, &string, length);
+        }
+
+        /// setSource overload taking an std::string.
+        void setSource(const std::string& string) const
+        {
+            setSource(string.c_str());
+        }
 
         /// Compiles the shader object.
         void compile() const;
@@ -61,6 +75,7 @@ namespace glutils {
 
         /// glGetShaderInfoLog - Returns the information log for a shader object.
         void getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const;
+        std::string getInfoLog() const;
     };
 
 } // glutils

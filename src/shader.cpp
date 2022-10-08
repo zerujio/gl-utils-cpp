@@ -35,5 +35,17 @@ namespace glutils {
         gl.GetShaderInfoLog(getName(), max_length, length, info_log);
     }
 
+    std::string Shader::getInfoLog() const
+    {
+        const auto log_length = getParameter(Parameter::info_log_length);
+        if (log_length)
+        {
+            std::string log (log_length, '\0');
+            getInfoLog(log_length, nullptr, log.data());
+            return log;
+        }
+        return {};
+    }
+
 
 } // glutils
