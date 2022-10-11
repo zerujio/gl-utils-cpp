@@ -3,8 +3,12 @@
 
 namespace glutils {
 
-    /// Calls glDebugMessageCallback
+    /// Calls glDebugMessageCallback and sets up a callback that writes to cout and cerr.
     void enableDebugCallback();
+
+    auto getDebugMessageSourceString(unsigned int source_enum) -> const char*;
+    auto getDebugMessageTypeString(unsigned int type_enum) -> const char*;
+    auto getDebugMessageSeverityString(unsigned int severity_enum) -> const char*;
 
 } // glutils
 

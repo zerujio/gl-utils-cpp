@@ -111,6 +111,16 @@ namespace glutils {
         gl.DeleteBuffers(1, &buffer.m_name);
     }
 
+    void Buffer::bindBase(Buffer::IndexedTarget target, GLuint index) const
+    {
+        gl.BindBufferBase(static_cast<GLenum>(target), index, m_name);
+    }
+
+    void Buffer::bindRange(Buffer::IndexedTarget target, GLuint index, GLintptr offset, GLsizeiptr size) const
+    {
+        gl.BindBufferRange(static_cast<GLenum>(target), index, m_name, offset, size);
+    }
+
     // struct BufferOffset
 
     void BufferOffset::write(GLsizeiptr size, const void *data) const

@@ -5,6 +5,6 @@ add_library(glutils STATIC
         shader.cpp
         buffer.cpp
         vertex_array.cpp
-        glsl_syntax.cpp interface_block.cpp)
+        glsl_syntax.cpp)
 target_include_directories(glutils PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(glutils PUBLIC glad)

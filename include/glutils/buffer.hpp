@@ -14,7 +14,7 @@ namespace glutils {
         static auto create() -> Buffer;
         static void destroy(Buffer buffer);
 
-        enum class Parameter {
+        enum class Parameter : GLenum {
             Access          = 0x88BB,
             AccessFlags     = 0x911F,
             Immutable       = 0x821F,
@@ -41,7 +41,7 @@ namespace glutils {
         auto getParameter64(Parameter pname) const -> GLint64;
 
         /// Access modes for glMapBuffer.
-        enum class AccessMode {
+        enum class AccessMode : GLenum {
             read_only       = 0x88B8,
             write_only      = 0x88B9,
             read_write      = 0x88BA
@@ -58,7 +58,7 @@ namespace glutils {
         [[nodiscard]] AccessMode getAccessMode() const;
 
         /// Access flags for glMapBufferRange.
-        enum class AccessFlags {
+        enum class AccessFlags : GLenum {
             read                = 0x0001,
             write               = 0x0002,
             persistent          = 0x0040,
@@ -125,7 +125,7 @@ namespace glutils {
         [[nodiscard]]
         auto getSize() const -> GLsizeiptr;
 
-        enum class Usage {
+        enum class Usage : GLenum {
             static_draw     = 0x88E4,
             static_read     = 0x88E5,
             static_copy     = 0x88E6,
@@ -146,7 +146,7 @@ namespace glutils {
         [[nodiscard]]
         auto getUsage() const -> Usage;
 
-        enum class StorageFlags {
+        enum class StorageFlags : GLenum {
             dynamic_storage = 0x0100,
             map_read        = 0x0001,
             map_write       = 0x0002,
@@ -231,6 +231,19 @@ namespace glutils {
          * This invalidates the pointer returned by map() and map().
          */
         void unmap() const;
+
+        enum class IndexedTarget : GLenum {
+            atomic_counter      = 0x92C0,
+            transform_feedback  = 0x8C8E,
+            uniform             = 0x8A11,
+            shader_storage      = 0x90D2
+        };
+
+        /// glBindBufferBase - bind a buffer object to an indexed buffer target. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBindBufferBase.xhtml
+        void bindBase(IndexedTarget target, GLuint index) const;
+
+        /// glBindBufferRange - bind a range within a buffer object to an indexed buffer target. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBindBufferRange.xhtml
+        void bindRange(IndexedTarget target, GLuint index, GLintptr offset, GLsizeiptr size) const;
     };
 
     /// Specifies a byte offset into a buffer object.
@@ -253,6 +266,11 @@ namespace glutils {
         /// Map @p length bytes of device memory to the host address space, starting at offset .
         [[nodiscard]]
         auto map(GLsizeiptr length, Buffer::AccessFlags access) const -> void *;
+
+        void bindRange(Buffer::IndexedTarget target, GLuint index, GLsizeiptr size) const
+        {
+            buffer.bindRange(target, index, offset, size);
+        }
     };
 
     /// Specifies a memory range within a buffer object.
@@ -277,6 +295,11 @@ namespace glutils {
         /// Map this memory range to the host memory address space.
         [[nodiscard]]
         auto map(Buffer::AccessFlags access) const -> void *;
+
+        void bindRange(Buffer::IndexedTarget target, GLuint index) const
+        {
+            BufferOffset::bindRange(target, index, size);
+        }
     };
 
     auto operator|(Buffer::AccessFlags l, Buffer::AccessFlags r) -> Buffer::AccessFlags;
