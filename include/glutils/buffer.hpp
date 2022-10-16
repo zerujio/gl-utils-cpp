@@ -147,6 +147,7 @@ namespace glutils {
         auto getUsage() const -> Usage;
 
         enum class StorageFlags : GLenum {
+            none            = 0,
             dynamic_storage = 0x0100,
             map_read        = 0x0001,
             map_write       = 0x0002,

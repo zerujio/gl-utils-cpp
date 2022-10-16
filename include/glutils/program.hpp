@@ -166,7 +166,7 @@ namespace glutils {
         template<class Return, class... Params>
         static auto s_glCall(GLProc<Return, Params...> GLContext::* proc)
         {
-            return getGL().*proc;
+            return getGL()->*proc;
         }
 
         // glProgramUniformNT
