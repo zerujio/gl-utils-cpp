@@ -1,6 +1,8 @@
 #include "glutils/program.hpp"
 #include "glutils/gl.hpp"
 
+#include "glm/gtc/type_ptr.hpp"
+
 namespace glutils {
 
     auto Program::create() -> Program
@@ -38,24 +40,24 @@ namespace glutils {
         gl.GetProgramResourceiv(getName(), interface, index, prop_count, props, buf_size, length, params);
     }
 
-    auto Program::getResourceLocation(GLenum interface, const char *name) const -> GLint
+    auto Program::getResourceLocation(Interface interface, const char *name) const -> GLint
     {
-        return gl.GetProgramResourceLocation(getName(), interface, name);
+        return gl.GetProgramResourceLocation(getName(), static_cast<GLenum>(interface), name);
     }
 
-    auto Program::getResourceIndex(GLenum interface, const char *name) const -> GLuint
+    auto Program::getResourceIndex(Interface interface, const char *name) const -> GLuint
     {
-        return gl.GetProgramResourceIndex(getName(), interface, name);
+        return gl.GetProgramResourceIndex(getName(), static_cast<GLenum>(interface), name);
     }
 
-    auto Program::getResourceLocationIndex(GLenum interface, const char *name) const -> GLint
+    auto Program::getResourceLocationIndex(Interface interface, const char *name) const -> GLint
     {
-        return gl.GetProgramResourceLocationIndex(getName(), interface, name);
+        return gl.GetProgramResourceLocationIndex(getName(), static_cast<GLenum>(interface), name);
     }
 
-    auto Program::getResourceName(GLenum interface, GLuint index, GLsizei buf_size, GLsizei *length, char *name) const
+    auto Program::getResourceName(Interface interface, GLuint index, GLsizei buf_size, GLsizei *length, char *name) const
     {
-        gl.GetProgramResourceName(getName(), interface, index, buf_size, length, name);
+        gl.GetProgramResourceName(getName(), static_cast<GLenum>(interface), index, buf_size, length, name);
     }
 
     void Program::use() const
@@ -100,5 +102,69 @@ namespace glutils {
 
         return log;
     }
+
+    void Program::bindAttribLocation(GLuint index, const char *name) const
+    {
+        gl.BindAttribLocation(m_name, index, name);
+    }
+
+    auto Program::getGL() -> Program::GLContext *
+    {
+        return &gl;
+    }
+
+#define GLUTILS_GL_CONTEXT_PTR_TO_MEMBER_FUNC(MEMBER) &GladGLContext::MEMBER
+#define GLUTILS_PROGRAM_UNIFORM(N, SUFFIX) GLUTILS_GL_CONTEXT_PTR_TO_MEMBER_FUNC(ProgramUniform##N##SUFFIX)
+#define GLUTILS_PROGRAM_UNIFORM_FUNCTIONS_DEFINITION(TYPE, TYPE_SUFFIX) \
+    template<> const Program::GLProgramUniformFunctions<TYPE> Program::s_program_uniform_functions<TYPE> \
+    {                                                                   \
+        GLUTILS_PROGRAM_UNIFORM(1, TYPE_SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM(2, TYPE_SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM(3, TYPE_SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM(4, TYPE_SUFFIX)                         \
+    };
+
+#define GLUTILS_PROGRAM_UNIFORM_V(N, SUFFIX) GLUTILS_GL_CONTEXT_PTR_TO_MEMBER_FUNC(ProgramUniform##N##SUFFIX##v)
+#define GLUTILS_PROGRAM_UNIFORM_V_FUNCTIONS_DEFINITION(TYPE, SUFFIX) \
+    template<> const Program::GLProgramUniformvFunctions<TYPE> Program::s_program_uniform_v_functions<TYPE> \
+    {                                                                \
+        GLUTILS_PROGRAM_UNIFORM_V(1, SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM_V(2, SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM_V(3, SUFFIX),                        \
+        GLUTILS_PROGRAM_UNIFORM_V(4, SUFFIX)                         \
+    };
+
+#define GLUTILS_PROGRAM_UNIFORM_DEFINITIONS(TYPE, SUFFIX) \
+    GLUTILS_PROGRAM_UNIFORM_FUNCTIONS_DEFINITION(TYPE, SUFFIX) \
+    GLUTILS_PROGRAM_UNIFORM_V_FUNCTIONS_DEFINITION(TYPE, SUFFIX)
+
+    GLUTILS_PROGRAM_UNIFORM_DEFINITIONS(float, f)
+    GLUTILS_PROGRAM_UNIFORM_DEFINITIONS(double, d)
+    GLUTILS_PROGRAM_UNIFORM_DEFINITIONS(int, i)
+    GLUTILS_PROGRAM_UNIFORM_DEFINITIONS(unsigned int, ui)
+
+#define GLUTILS_PROGRAM_UNIFORM_MATRIX(DIM, SUFFIX) GLUTILS_GL_CONTEXT_PTR_TO_MEMBER_FUNC(ProgramUniformMatrix##DIM##SUFFIX##v)
+#define GLUTILS_PROGRAM_UNIFORM_MATRIX_FUNCTIONS_DEFINITION(TYPE, SUFFIX) \
+    template<> const Program::GLProgramUniformMatrixFunctions<TYPE> Program::s_program_uniform_matrix_functions<TYPE>  = \
+    {                                                                     \
+        {                                                                 \
+            {                                                             \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(2,   SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(2x3, SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(2x4, SUFFIX)               \
+            }, {                                                          \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(3x2, SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(3,   SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(3x4, SUFFIX)               \
+            }, {                                                          \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(4x2, SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(4x3, SUFFIX),              \
+                GLUTILS_PROGRAM_UNIFORM_MATRIX(4,   SUFFIX)               \
+            }                                                             \
+        }                                                                 \
+    };
+
+    GLUTILS_PROGRAM_UNIFORM_MATRIX_FUNCTIONS_DEFINITION(float, f)
+    GLUTILS_PROGRAM_UNIFORM_MATRIX_FUNCTIONS_DEFINITION(double, d)
 
 } // glutils
