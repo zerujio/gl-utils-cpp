@@ -13,9 +13,12 @@ namespace glutils {
     template<class HandleType>
     class Guard {
     public:
-        /// Create and take ownership of a new instance.
+        /// Create and take ownership of a new object.
         template<class... Args>
         Guard(Args... args) : m_handle(HandleType::create(args...)) {}
+
+        /// Create a guard for an existing object.
+        explicit Guard(HandleType handle) : m_handle(handle) {}
 
         /// Destroy the managed object.
         ~Guard()
