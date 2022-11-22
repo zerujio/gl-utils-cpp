@@ -14,6 +14,13 @@ namespace glutils {
         static auto create() -> Buffer;
         static void destroy(Buffer buffer);
 
+        // represents a memory range within a buffer
+        struct Range
+        {
+            GLintptr offset {0};
+            GLsizeiptr size {0};
+        };
+
         enum class Parameter : GLenum {
             Access          = 0x88BB,
             AccessFlags     = 0x911F,
@@ -196,6 +203,7 @@ namespace glutils {
          * @param data pointer to the data to write.
          */
         void write(GLintptr offset, GLsizeiptr size, const void *data) const;
+        void write(Range range, const void* data) const { write(range.offset, range.size, data); }
 
         /// Copy data from GPU buffer to host memory.
         /**
@@ -205,6 +213,7 @@ namespace glutils {
          * @param data pointer to host memory; data read from the buffer will be written here.
          */
         void read(GLintptr offset, GLsizeiptr size, void *data) const;
+        void read(Range range, void* data) const { read(range.offset, range.size, data); }
 
         /// Map the whole buffer to the host address space.
         /**
@@ -225,6 +234,11 @@ namespace glutils {
          */
         [[nodiscard]]
         auto mapRange(GLintptr offset, GLsizeiptr length, AccessFlags access) const -> void *;
+        [[nodiscard]]
+        auto mapRange(Range range, AccessFlags access) const -> void*
+        {
+            return mapRange(range.offset, range.size, access);
+        }
 
         /// Unmap this buffer.
         /**
@@ -246,61 +260,9 @@ namespace glutils {
 
         /// glBindBufferRange - bind a range within a buffer object to an indexed buffer target. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBindBufferRange.xhtml
         void bindRange(IndexedTarget target, GLuint index, GLintptr offset, GLsizeiptr size) const;
-    };
-
-    /// Specifies a byte offset into a buffer object.
-    struct BufferOffset {
-        Buffer buffer {};
-        GLintptr offset {0};
-
-        /// Construct a null offset: a zero byte offset into the zero-named buffer.
-        BufferOffset() = default;
-
-        /// Construct an instance that specifies a @p size byte offset into the given buffer.
-        BufferOffset(Buffer b, GLintptr o) : buffer(b), offset(o) {}
-
-        /// Write @p size bytes to the buffer, starting at offset .
-        void write(GLsizeiptr size, const void *data) const;
-
-        /// Read @p size bytes from the buffer, starting at offset .
-        void read(GLsizeiptr size, void *data) const;
-
-        /// Map @p length bytes of device memory to the host address space, starting at offset .
-        [[nodiscard]]
-        auto map(GLsizeiptr length, Buffer::AccessFlags access) const -> void *;
-
-        void bindRange(Buffer::IndexedTarget target, GLuint index, GLsizeiptr size) const
+        void bindRange(IndexedTarget target, GLuint index, Range range) const
         {
-            buffer.bindRange(target, index, offset, size);
-        }
-    };
-
-    /// Specifies a memory range within a buffer object.
-    struct BufferRange : BufferOffset {
-        GLsizeiptr size {0};
-
-        /// Construct a null range; a zero byte range within the zero-named buffer.
-        BufferRange() = default;
-
-        /// Construct a @p s byte range starting at the offset specified in @p s.
-        BufferRange(BufferOffset o, GLsizeiptr s) : BufferOffset(o), size(s) {}
-
-        /// Construct a new range.
-        BufferRange(Buffer b, GLintptr o, GLsizeiptr s) : BufferOffset(b, o), size(s) {}
-
-        /// Write to this GPU memory range.
-        void write(const void *data) const;
-
-        /// Read from this GPU memory range.
-        void read(void *data) const;
-
-        /// Map this memory range to the host memory address space.
-        [[nodiscard]]
-        auto map(Buffer::AccessFlags access) const -> void *;
-
-        void bindRange(Buffer::IndexedTarget target, GLuint index) const
-        {
-            BufferOffset::bindRange(target, index, size);
+            bindRange(target, index, range.offset, range.size);
         }
     };
 
@@ -311,7 +273,6 @@ namespace glutils {
     auto operator|(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags;
 
     auto operator&(Buffer::StorageFlags l, Buffer::StorageFlags r) -> Buffer::StorageFlags;
-
 
 } // glutils
 

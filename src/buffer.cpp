@@ -121,40 +121,6 @@ namespace glutils {
         gl.BindBufferRange(static_cast<GLenum>(target), index, m_name, offset, size);
     }
 
-    // struct BufferOffset
-
-    void BufferOffset::write(GLsizeiptr size, const void *data) const
-    {
-        buffer.write(offset, size, data);
-    }
-
-    void BufferOffset::read(GLsizeiptr size, void *data) const
-    {
-        buffer.read(offset, size, data);
-    }
-
-    auto BufferOffset::map(GLsizeiptr length, Buffer::AccessFlags access) const -> void *
-    {
-        return buffer.mapRange(offset, length, access);
-    }
-
-    // struct BufferRange
-
-    void BufferRange::write(const void *data) const
-    {
-        BufferOffset::write(size, data);
-    }
-
-    void BufferRange::read(void *data) const
-    {
-        BufferOffset::read(size, data);
-    }
-
-    auto BufferRange::map(Buffer::AccessFlags access) const -> void *
-    {
-        return BufferOffset::map(size, access);
-    }
-
     template<class T>
     auto enumOR(T l, T r) -> T
     {
