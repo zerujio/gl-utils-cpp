@@ -206,7 +206,7 @@ namespace glutils {
         static constexpr auto s_glProgramUniformv =
                 [](GLuint program, GLint location, GLsizei count, const T* values)
                 {
-                    s_glCall(s_program_uniform_v_functions<T>[0])(program, location, count, values);
+                    s_glCall(s_program_uniform_v_functions<T>.values[0])(program, location, count, values);
                 };
 
         // glProgramUniformMatrix
@@ -226,8 +226,8 @@ namespace glutils {
         {
             static_assert(C > 1 && C < 5 && R > 1 && R < 5 , "C and R may only be 2, 3 or 4");
 
-            s_glCall(s_program_uniform_matrix_functions<T>[C-2][R-2])(program, location, count, transpose,
-                                                                      glm::value_ptr(values));
+            s_glCall(s_program_uniform_matrix_functions<T>.values[C-2][R-2])(program, location, count, transpose,
+                                                                            glm::value_ptr(values));
         }
     };
 
@@ -264,9 +264,8 @@ namespace glutils {
             {
                 static_assert(N > 1 && N < 5, "N may only be 2, 3 or 4");
 
-                s_glCall(s_program_uniform_v_functions<T>[N - 1])(program, location, count, glm::value_ptr(values));
+                s_glCall(s_program_uniform_v_functions<T>.values[N - 1])(program, location, count, glm::value_ptr(*values));
             };
-
 } // glutils
 
 
