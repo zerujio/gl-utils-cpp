@@ -1,6 +1,6 @@
 #include "glutils/gl.hpp"
 
-namespace glutils {
+namespace GL {
 
     thread_local GladGLContext gl;
 
@@ -8,4 +8,4 @@ namespace glutils {
         return gladLoadGLContext(&gl, load_func);
     }
 
-} // glutils
+} // GL

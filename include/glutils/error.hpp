@@ -3,12 +3,12 @@
 
 #include <stdexcept>
 
-namespace glutils {
+namespace GL {
 
     struct GLError : public std::runtime_error {
         using std::runtime_error::runtime_error;
     };
 
-} // glutils
+} // GL
 
 #endif //GLUTILSCPP_ERROR_HPP

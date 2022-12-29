@@ -1,52 +1,52 @@
 #include "glutils/shader.hpp"
 #include "glutils/gl.hpp"
 
-namespace glutils {
+namespace GL {
 
-    auto Shader::create(Shader::Type type) -> Shader
-    {
-        return Shader{gl.CreateShader(static_cast<GLenum>(type))};
-    }
+auto ShaderHandle::create(ShaderHandle::Type type) -> ShaderHandle
+{
+    return ShaderHandle{gl.CreateShader(static_cast<GLenum>(type))};
+}
 
-    void Shader::destroy(Shader shader)
-    {
-        gl.DeleteShader(shader.getName());
-    }
+void ShaderHandle::destroy(ShaderHandle shader)
+{
+    gl.DeleteShader(shader.getName());
+}
 
-    void Shader::setSource(GLsizei count, const GLchar **string, const GLint *length) const
-    {
-        gl.ShaderSource(getName(), count, string, length);
-    }
+void ShaderHandle::setSource(GLsizei count, const GLchar **string, const GLint *length) const
+{
+    gl.ShaderSource(getName(), count, string, length);
+}
 
-    void Shader::compile() const
-    {
-        gl.CompileShader(getName());
-    }
+void ShaderHandle::compile() const
+{
+    gl.CompileShader(getName());
+}
 
-    auto Shader::getParameter(Shader::Parameter parameter) const -> GLint
-    {
-        GLint value;
-        gl.GetShaderiv(getName(), static_cast<GLenum>(parameter), &value);
-        return value;
-    }
+auto ShaderHandle::getParameter(ShaderHandle::Parameter parameter) const -> GLint
+{
+    GLint value;
+    gl.GetShaderiv(getName(), static_cast<GLenum>(parameter), &value);
+    return value;
+}
 
-    void Shader::getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const
-    {
-        gl.GetShaderInfoLog(getName(), max_length, length, info_log);
-    }
+void ShaderHandle::getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const
+{
+    gl.GetShaderInfoLog(getName(), max_length, length, info_log);
+}
 
-    std::string Shader::getInfoLog() const
-    {
-        const auto log_length = getParameter(Parameter::info_log_length);
+std::string ShaderHandle::getInfoLog() const
+{
+    const auto log_length = getParameter(Parameter::info_log_length);
 
-        if (log_length <= 0)
-            return {};
+    if (log_length <= 0)
+        return {};
 
-        std::string log (log_length, '\0');
-        getInfoLog(log_length, nullptr, log.data());
+    std::string log(log_length, '\0');
+    getInfoLog(log_length, nullptr, log.data());
 
-        return log;
-    }
+    return log;
+}
 
 
-} // glutils
+} // GL

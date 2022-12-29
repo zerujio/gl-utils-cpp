@@ -4,7 +4,7 @@
 #include <ostream>
 #include <vector>
 
-namespace glutils {
+namespace GL {
 
     enum class Type
     {

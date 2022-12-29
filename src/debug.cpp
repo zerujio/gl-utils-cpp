@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace glutils {
+namespace GL {
 
     auto getDebugMessageSourceString(unsigned int source_enum) -> const char*
     {
@@ -68,4 +68,4 @@ namespace glutils {
         gl.DebugMessageCallback(debugCallback, nullptr);
     }
 
-} // glutils
+} // GL

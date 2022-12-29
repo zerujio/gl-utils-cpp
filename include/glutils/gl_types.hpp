@@ -3,7 +3,7 @@
 
 #include <cinttypes>
 
-namespace glutils {
+namespace GL {
     using GLboolean = unsigned char;
     using GLint = std::int32_t;
     using GLint64 = std::int64_t;
@@ -17,6 +17,6 @@ namespace glutils {
     using GLdouble = double;
     using GLenum = unsigned int;
     using GLchar = char;
-} // glutils
+} // GL
 
 #endif //PROCEDURALPLACEMENTLIB_GL_TYPES_HPP

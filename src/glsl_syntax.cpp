@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace glutils {
+namespace GL {
 
     struct StringJoiner
     {

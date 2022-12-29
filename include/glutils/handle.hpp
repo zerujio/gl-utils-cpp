@@ -5,7 +5,7 @@
 
 struct GladGLContext;
 
-namespace glutils {
+namespace GL {
 
 /// A wrapper around an OpenGL integer name providing an object-oriented interface.
 class Handle {
@@ -54,6 +54,6 @@ constexpr bool operator>=(const Handle &lhs, const Handle &rhs)
     return !(lhs < rhs);
 }
 
-} // glutils
+} // GL
 
 #endif //SIMPLERENDERER_HANDLE_HPP
