@@ -112,7 +112,7 @@ public:
     auto getInterface(GLenum interface, GLenum parameter) const -> GLint;
 
     /// retrieve values for multiple properties of a single active resource within a program object. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGetProgramResource.xhtml
-    void getResource(GLenum interface,
+    void getResource(Interface interface,
                      GLuint index,
                      GLsizei prop_count,
                      const GLenum *props,

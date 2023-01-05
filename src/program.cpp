@@ -34,10 +34,10 @@ auto ProgramHandle::getInterface(GLenum interface, GLenum parameter) const -> GL
     return value;
 }
 
-void ProgramHandle::getResource(GLenum interface, GLuint index, GLsizei prop_count, const GLenum *props,
+void ProgramHandle::getResource(Interface interface, GLuint index, GLsizei prop_count, const GLenum *props,
                                 GLsizei buf_size, GLsizei *length, GLint *params) const
 {
-    gl.GetProgramResourceiv(getName(), interface, index, prop_count, props, buf_size, length, params);
+    gl.GetProgramResourceiv(getName(), static_cast<::GLenum>(interface), index, prop_count, props, buf_size, length, params);
 }
 
 auto ProgramHandle::getResourceLocation(Interface interface, const char *name) const -> GLint
