@@ -5,7 +5,6 @@
 #include "shader.hpp"
 #include "object.hpp"
 
-#include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 #include <type_traits>
