@@ -1,4 +1,4 @@
-#include "sync.hpp"
+#include "glutils/sync.hpp"
 
 #include "glutils/gl.hpp"
 
