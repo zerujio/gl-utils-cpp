@@ -277,6 +277,9 @@ public:
     {
         bindRange(target, index, range.offset, range.size);
     }
+
+    static void copy(BufferHandle read_buffer, BufferHandle write_buffer, GLintptr read_offset, GLintptr write_offset,
+                     GLsizeiptr size);
 };
 
 using Buffer = Object<BufferHandle>;

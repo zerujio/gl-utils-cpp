@@ -103,7 +103,7 @@ namespace GL {
     {
         GLuint name;
         gl.CreateBuffers(1, &name);
-        return {name};
+        return BufferHandle{name};
     }
 
     void BufferHandle::destroy(BufferHandle buffer)
@@ -121,7 +121,14 @@ namespace GL {
         gl.BindBufferRange(static_cast<GLenum>(target), index, m_name, offset, size);
     }
 
-    template<class T>
+void
+BufferHandle::copy(BufferHandle read_buffer, BufferHandle write_buffer, GLintptr read_offset, GLintptr write_offset,
+                   GLsizeiptr size)
+{
+    gl.CopyNamedBufferSubData(read_buffer.getName(), write_buffer.getName(), read_offset, write_offset, size);
+}
+
+template<class T>
     auto enumOR(T l, T r) -> T
     {
         return static_cast<T>(static_cast<std::underlying_type_t<T>>(l)

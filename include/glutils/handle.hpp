@@ -12,6 +12,8 @@ class Handle {
 public:
     constexpr Handle() = default;
 
+    constexpr explicit Handle(GLuint name) : m_name(name) {}
+
     /// Retrieve the underlying integer name.
     [[nodiscard]]
     constexpr auto getName() const -> GLuint
@@ -20,7 +22,6 @@ public:
     }
 
 protected:
-    constexpr Handle(GLuint name) : m_name(name) {}
     GLuint m_name {0};
 };
 
