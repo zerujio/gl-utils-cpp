@@ -4,6 +4,7 @@
 #include "handle.hpp"
 #include "buffer.hpp"
 #include "object.hpp"
+#include "vertex_attrib_enums.hpp"
 
 namespace GL {
 
@@ -75,30 +76,9 @@ public:
      */
     void setBindingDivisor(GLuint binding_index, GLuint divisor) const;
 
-    enum class AttribSize
-    {
-        one = 1,
-        two = 2,
-        three = 3,
-        four = 4
-    };
+    using AttribSize = VertexAttributeLength;
 
-    enum class AttribType
-    {
-        byte_ = 0x1400,
-        ubyte_ = 0x1401,
-        short_ = 0x1402,
-        ushort_ = 0x1403,
-        int_ = 0x1404,
-        uint_ = 0x1405,
-        fixed_ = 0x140C,
-        float_ = 0x1406,
-        half_float_ = 0x140B,
-        double_ = 0x140A,
-        int_2_10_10_10_rev = 0x8D9F,
-        uint_2_10_10_10_rev = 0x8368,
-        uint_10f_11f_11f_rev = 0x8C3B
-    };
+    using AttribType = VertexAttributeBaseType;
 
     /// glVertexArrayAttribFormat — specify the organization of vertex arrays.
     /**
