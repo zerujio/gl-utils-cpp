@@ -6,7 +6,7 @@ auto VertexArrayHandle::create() -> VertexArrayHandle
 {
     GLuint name;
     gl.CreateVertexArrays(1, &name);
-    return {name};
+    return VertexArrayHandle{name};
 }
 
 void VertexArrayHandle::destroy(GL::VertexArrayHandle vertex_array)
