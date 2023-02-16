@@ -43,6 +43,8 @@ public:
         HandleType::destroy(*this);
         HandleType& this_handle = *this;
         this_handle = handle;
+
+        return *this;
     }
 
     /// Take ownership of the object held by @p other and destroy the one owned by *this.
@@ -53,6 +55,8 @@ public:
         HandleType& other_handle = other;
         this_handle = other_handle;
         other_handle = HandleType();
+
+        return *this;
     }
 };
 
