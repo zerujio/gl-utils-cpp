@@ -4,6 +4,9 @@
 #include "handle.hpp"
 #include "object.hpp"
 
+#include <utility>
+#include <vector>
+
 namespace GL {
 
 /// Wraps "NamedBuffer" OpenGL functions.
@@ -278,8 +281,60 @@ public:
         bindRange(target, index, range.offset, range.size);
     }
 
+    /// glBindBuffersRange — bind ranges of one or more buffer objects to a sequence of indexed buffer targets.
+    /**
+     * https://registry.khronos.org/OpenGL-Refpages/gl4/
+     * @tparam InputIter An input iterator to a pair-like of GL::BufferHandle and GL::Buffer::Range
+     * @param target Indexed target to bind to.
+     * @param first_binding Starting binding index.
+     * @param begin Begin iterator.
+     * @param end End iterator.
+     */
+    template<typename InputIter>
+    static void bindRanges(IndexedTarget target, GLuint first_binding, InputIter begin, InputIter end)
+    {
+        std::vector<GLuint> buffers;
+        std::vector<GLintptr> offsets;
+        std::vector<GLintptr> sizes;
+        GLsizei count = 0;
+
+        auto iter = begin;
+        while (iter != end)
+        {
+            const auto [buffer, range] = *iter++;
+            buffers.emplace_back(buffer.getName());
+            offsets.emplace_back(range.offset);
+            sizes.emplace_back(range.size);
+            count++;
+        }
+
+        s_bindRange(target, first_binding, count, buffers.data(), offsets.data(), sizes.data());
+    }
+
+    /// glBindBuffersBase — bind one or more buffer objects to a sequence of indexed buffer targets. https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBindBuffersBase.xhtml
+    template<typename InputIter>
+    static void bindBases(IndexedTarget target, GLuint first_binding, InputIter begin_buffer, InputIter end_buffer)
+    {
+        std::vector<GLuint> buffers;
+        GLsizei count = 0;
+
+        auto iter = begin_buffer;
+        while (iter != end_buffer)
+        {
+            buffers.emplace_back(iter++->getName());
+            count++;
+        }
+
+        s_bindBases(target, first_binding, count, buffers.data());
+    }
+
     static void copy(BufferHandle read_buffer, BufferHandle write_buffer, GLintptr read_offset, GLintptr write_offset,
                      GLsizeiptr size);
+
+private:
+    static void s_bindRange(IndexedTarget target, GLuint first_binding, GLsizei count,
+                            const GLuint *buffers, const GLintptr *offsets, const GLintptr *sizes);
+    static void s_bindBases(IndexedTarget target, GLuint first_binding, GLsizei count, const GLuint* buffers);
 };
 
 using Buffer = Object<BufferHandle>;

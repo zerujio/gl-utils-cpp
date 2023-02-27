@@ -128,6 +128,19 @@ BufferHandle::copy(BufferHandle read_buffer, BufferHandle write_buffer, GLintptr
     gl.CopyNamedBufferSubData(read_buffer.getName(), write_buffer.getName(), read_offset, write_offset, size);
 }
 
+void
+BufferHandle::s_bindRange(BufferHandle::IndexedTarget target, GLuint first_binding, GLsizei count, const GLuint *buffers,
+                          const GLintptr *offsets, const GLintptr *sizes)
+{
+    gl.BindBuffersRange(static_cast<GLenum>(target), first_binding, count, buffers, offsets, sizes);
+}
+
+void BufferHandle::s_bindBases(BufferHandle::IndexedTarget target, GLuint first_binding, GLsizei count,
+                               const GLuint *buffers)
+{
+    gl.BindBuffersBase(static_cast<GLenum>(target), first_binding, count, buffers);
+}
+
 template<class T>
     auto enumOR(T l, T r) -> T
     {
