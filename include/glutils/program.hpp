@@ -255,7 +255,7 @@ constexpr auto ProgramHandle::s_glProgramUniform<glm::vec<N, T, Q>> =
             else if constexpr (N == 3)
                 s_glCall(s_program_uniform_functions<T>._3)(program, location, value.x, value.y, value.z);
             else if constexpr (N == 4)
-                s_glCall(s_program_uniform_functions<T>._4)(program, location, value.x, value.y, value.z.value.w);
+                s_glCall(s_program_uniform_functions<T>._4)(program, location, value.x, value.y, value.z, value.w);
         };
 
 template<auto N, class T, auto Q>
