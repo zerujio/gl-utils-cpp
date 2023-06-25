@@ -12,14 +12,15 @@ namespace GL {
 class Sync
 {
 public:
-    explicit Sync(__GLsync* sync) : m_ptr(sync) {}
+    explicit Sync(__GLsync *sync) : m_ptr(sync)
+    {}
 
     enum class Status
     {
-        already_signaled    = 0x911A,
-        timeout_expired     = 0x911B,
+        already_signaled = 0x911A,
+        timeout_expired = 0x911B,
         condition_satisfied = 0x911C,
-        wait_failed         = 0x911D
+        wait_failed = 0x911D
     };
 
     /// wraps glClientWaitSync()
@@ -31,10 +32,15 @@ public:
 
     /// get the native GLsync object pointer.
     [[nodiscard]]
-    __GLsync* getPtr() const { return m_ptr.get(); }
+    __GLsync *getPtr() const
+    { return m_ptr.get(); }
 
 private:
-    struct DeleteSync { void operator() (__GLsync* sync) const; };
+    struct DeleteSync
+    {
+        void operator()(__GLsync *sync) const;
+    };
+
     std::unique_ptr<__GLsync, DeleteSync> m_ptr;
 };
 

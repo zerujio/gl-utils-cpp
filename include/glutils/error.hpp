@@ -5,9 +5,10 @@
 
 namespace GL {
 
-    struct GLError : public std::runtime_error {
-        using std::runtime_error::runtime_error;
-    };
+struct Error : public std::runtime_error
+{
+    using std::runtime_error::runtime_error;
+};
 
 } // GL
 

@@ -5,34 +5,34 @@ namespace GL {
 
 auto ShaderHandle::create(ShaderHandle::Type type) -> ShaderHandle
 {
-    return ShaderHandle{gl.CreateShader(static_cast<GLenum>(type))};
+    return ShaderHandle{glCreateShader(static_cast<GLenum>(type))};
 }
 
 void ShaderHandle::destroy(ShaderHandle shader)
 {
-    gl.DeleteShader(shader.getName());
+    glDeleteShader(shader.getName());
 }
 
 void ShaderHandle::setSource(GLsizei count, const GLchar **string, const GLint *length) const
 {
-    gl.ShaderSource(getName(), count, string, length);
+    glShaderSource(getName(), count, string, length);
 }
 
 void ShaderHandle::compile() const
 {
-    gl.CompileShader(getName());
+    glCompileShader(getName());
 }
 
 auto ShaderHandle::getParameter(ShaderHandle::Parameter parameter) const -> GLint
 {
     GLint value;
-    gl.GetShaderiv(getName(), static_cast<GLenum>(parameter), &value);
+    glGetShaderiv(getName(), static_cast<GLenum>(parameter), &value);
     return value;
 }
 
 void ShaderHandle::getInfoLog(GLsizei max_length, GLsizei *length, GLchar *info_log) const
 {
-    gl.GetShaderInfoLog(getName(), max_length, length, info_log);
+    glGetShaderInfoLog(getName(), max_length, length, info_log);
 }
 
 std::string ShaderHandle::getInfoLog() const

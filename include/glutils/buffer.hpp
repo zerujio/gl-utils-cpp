@@ -334,7 +334,8 @@ public:
 private:
     static void s_bindRange(IndexedTarget target, GLuint first_binding, GLsizei count,
                             const GLuint *buffers, const GLintptr *offsets, const GLintptr *sizes);
-    static void s_bindBases(IndexedTarget target, GLuint first_binding, GLsizei count, const GLuint* buffers);
+
+    static void s_bindBases(IndexedTarget target, GLuint first_binding, GLsizei count, const GLuint *buffers);
 };
 
 using Buffer = Object<BufferHandle>;

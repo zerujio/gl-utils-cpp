@@ -1,6 +1,5 @@
 add_library(glutils STATIC
         gl.cpp
-        debug.cpp
         program.cpp
         shader.cpp
         buffer.cpp
@@ -10,3 +9,4 @@ add_library(glutils STATIC
         texture.cpp)
 target_include_directories(glutils PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(glutils PUBLIC glad glm)
+target_compile_definitions(glutils PUBLIC GLUTILS_DEBUG=$<CONFIG:Debug>)

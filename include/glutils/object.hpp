@@ -19,10 +19,12 @@ public:
      * @param args Values to pass to the object constructor.
      */
     template<typename ... Args>
-    explicit Object(Args... args) : HandleType(HandleType::create(args...)) {}
+    explicit Object(Args... args) : HandleType(HandleType::create(args...))
+    {}
 
     /// Take ownership of the object referred to by @p handle. There should be at most one Object instance for each GL object.
-    explicit Object(HandleType handle) : HandleType(handle) {}
+    explicit Object(HandleType handle) : HandleType(handle)
+    {}
 
     /// Destroy the owned object using HandleType::destroy()
     ~Object()
@@ -31,28 +33,28 @@ public:
     }
 
     /// Take ownership of the object held by @p other, which will be left holding no object.
-    Object(Object&& other) noexcept : HandleType(other)
+    Object(Object &&other) noexcept: HandleType(other)
     {
-        HandleType& other_handle = other;
+        HandleType &other_handle = other;
         other_handle = HandleType();
     }
 
     /// Take ownership of the object @p handle refers to and destroy the currently owned one.
-    Object& operator= (HandleType handle) noexcept
+    Object &operator=(HandleType handle) noexcept
     {
         HandleType::destroy(*this);
-        HandleType& this_handle = *this;
+        HandleType &this_handle = *this;
         this_handle = handle;
 
         return *this;
     }
 
     /// Take ownership of the object held by @p other and destroy the one owned by *this.
-    Object& operator= (Object&& other) noexcept
+    Object &operator=(Object &&other) noexcept
     {
         HandleType::destroy(*this);
-        HandleType& this_handle = *this;
-        HandleType& other_handle = other;
+        HandleType &this_handle = *this;
+        HandleType &other_handle = other;
         this_handle = other_handle;
         other_handle = HandleType();
 

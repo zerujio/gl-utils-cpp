@@ -156,18 +156,8 @@ public:
 private:
     // glProgramUniform* helpers
 
-    using GLContext = GladGLContext;
-
-    static auto getGL() -> GLContext *;
-
     template<class R, class... Ps>
     using GLProc = R (*)(Ps...);
-
-    template<class Return, class... Params>
-    static auto s_glCall(GLProc<Return, Params...> GLContext::* proc)
-    {
-        return getGL()->*proc;
-    }
 
     // glProgramUniformNT
     template<class... Params> using GLProgramUniformProc = GLProc<void, GLuint, GLint, Params...>;
@@ -175,10 +165,10 @@ private:
     template<class T>
     struct GLProgramUniformFunctions
     {
-        GLProgramUniformProc<T> GLContext::* _1;
-        GLProgramUniformProc<T, T> GLContext::* _2;
-        GLProgramUniformProc<T, T, T> GLContext::* _3;
-        GLProgramUniformProc<T, T, T, T> GLContext::* _4;
+        GLProgramUniformProc<T> _1;
+        GLProgramUniformProc<T, T> _2;
+        GLProgramUniformProc<T, T, T> _3;
+        GLProgramUniformProc<T, T, T, T> _4;
     };
 
     template<class T>
@@ -197,7 +187,7 @@ private:
     template<class T>
     struct GLProgramUniformvFunctions
     {
-        GLProgramUniformvProc<T> GLContext::* values[4];
+        GLProgramUniformvProc<T> values[4];
     };
 
     template<class T> static const GLProgramUniformvFunctions<T> s_program_uniform_v_functions{};
@@ -215,7 +205,7 @@ private:
     template<class T>
     struct GLProgramUniformMatrixFunctions
     {
-        GLProgramUniformMatrixProc<T> GLContext::* values[3][3];
+        GLProgramUniformMatrixProc<T> values[3][3];
     };
 
     template<class T> static const GLProgramUniformMatrixFunctions<T> s_program_uniform_matrix_functions;
