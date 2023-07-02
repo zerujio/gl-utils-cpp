@@ -4,7 +4,7 @@
 #include "vertex_attrib_enums.hpp"
 #include "gl_types.hpp"
 
-#include "glm/ext/vector_common.hpp"
+#include "glm/fwd.hpp"
 
 namespace GL::VertexAttrib {
 
