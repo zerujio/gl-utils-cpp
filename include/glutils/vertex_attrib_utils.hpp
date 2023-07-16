@@ -8,6 +8,25 @@
 
 namespace GL::VertexAttrib {
 
+template<typename T> VertexAttributeType type_of;
+
+#define DEFINE_ATTRIB(TYPE) \
+template<> constexpr VertexAttributeType type_of<GL##TYPE> = VertexAttributeType::_##TYPE;
+
+DEFINE_ATTRIB(int)
+DEFINE_ATTRIB(uint)
+DEFINE_ATTRIB(short)
+DEFINE_ATTRIB(ushort)
+DEFINE_ATTRIB(byte)
+DEFINE_ATTRIB(ubyte)
+DEFINE_ATTRIB(float)
+DEFINE_ATTRIB(double)
+
+#undef DEFINE_ATTRIB
+
+template<uint L>
+constexpr std::enable_if_t<1 <= L && L <= 4, VertexAttributeLength> length_of = static_cast<VertexAttributeLength>(L);
+
 namespace impl {
 
 template<auto V>
@@ -24,7 +43,7 @@ struct WrapType
 
 } // namespace impl
 
-using BaseType = VertexAttributeBaseType;
+using BaseType = VertexAttributeType;
 using Length = VertexAttributeLength;
 
 template<typename T>
@@ -53,9 +72,9 @@ template<auto V> using EnumValueToType = typename EnumValueTo<V>::Type;
 template<BaseType E> constexpr auto size_of = sizeof(EnumValueToType<E>);
 
 /// Get the size in bytes of the type associated with a given VertexAttributeBaseType enum.
-constexpr unsigned int getSizeOfBaseType(VertexAttributeBaseType type)
+constexpr unsigned int getSizeOfBaseType(VertexAttributeType type)
 {
-    using VA = VertexAttributeBaseType;
+    using VA = VertexAttributeType;
 
     switch (type)
     {
@@ -90,7 +109,7 @@ constexpr unsigned int getSizeOfBaseType(VertexAttributeBaseType type)
 }
 
 /// Converts an integer value to typed enum VertexAttributeLength.
-constexpr VertexAttributeLength toLengthEnum(GLenum length)
+constexpr VertexAttributeLength asVertexAttributeLength(GLuint length)
 {
     if (length < 1 || length > 4)
         throw std::logic_error("invalid vertex attribute length; must be 1, 2, 3 or 4");
@@ -112,7 +131,7 @@ struct FormatEnum final
 template<int L, typename T, glm::qualifier Q>
 struct FormatEnum<glm::vec<L, T, Q>> final
 {
-    static constexpr Length length = toLengthEnum(L);
+    static constexpr Length length = asVertexAttributeLength(L);
     static constexpr BaseType base_type = TypeToEnumValue<T>;
 };
 

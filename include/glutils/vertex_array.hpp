@@ -1,10 +1,10 @@
-#ifndef SIMPLERENDERER_VERTEX_ARRAY_HPP
-#define SIMPLERENDERER_VERTEX_ARRAY_HPP
+#ifndef GLUTILS_VERTEX_ARRAY_HPP
+#define GLUTILS_VERTEX_ARRAY_HPP
 
-#include "handle.hpp"
-#include "buffer.hpp"
-#include "object.hpp"
-#include "vertex_attrib_enums.hpp"
+#include "glutils/handle.hpp"
+#include "glutils/buffer.hpp"
+#include "glutils/object.hpp"
+#include "glutils/vertex_attrib_enums.hpp"
 
 namespace GL {
 
@@ -78,7 +78,7 @@ public:
 
     using AttribSize = VertexAttributeLength;
 
-    using AttribType = VertexAttributeBaseType;
+    using AttribType = VertexAttributeType;
 
     /// glVertexArrayAttribFormat — specify the organization of vertex arrays.
     /**
@@ -126,4 +126,4 @@ using VertexArray = Object<VertexArrayHandle>;
 
 } // GL
 
-#endif //SIMPLERENDERER_VERTEX_ARRAY_HPP
+#endif //GLUTILS_VERTEX_ARRAY_HPP

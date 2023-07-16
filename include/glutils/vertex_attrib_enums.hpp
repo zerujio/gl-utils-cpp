@@ -7,7 +7,7 @@
 
 namespace GL {
 
-enum class VertexAttributeBaseType : GLenum
+enum class VertexAttributeType : GLenum
 {
     _byte = 0x1400,
     _ubyte = 0x1401,

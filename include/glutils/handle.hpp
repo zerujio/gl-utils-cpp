@@ -22,10 +22,10 @@ public:
     }
 
     // Checks if the integer name is zero, which indicates a null object.
-    [[nodiscard]] bool isZero() const
+    [[nodiscard]] constexpr bool isZero() const noexcept
     { return m_name == 0; }
 
-    [[nodiscard]] explicit operator bool() const
+    [[nodiscard]] constexpr explicit operator bool() const noexcept
     { return !isZero(); }
 
 protected:
