@@ -29,7 +29,8 @@ public:
     /// Destroy the owned object using HandleType::destroy()
     ~Object()
     {
-        HandleType::destroy(*this);
+        if (*this)
+            HandleType::destroy(*this);
     }
 
     /// Take ownership of the object held by @p other, which will be left holding no object.
@@ -52,7 +53,9 @@ public:
     /// Take ownership of the object held by @p other and destroy the one owned by *this.
     Object &operator=(Object &&other) noexcept
     {
-        HandleType::destroy(*this);
+        if (*this)
+            HandleType::destroy(*this);
+
         HandleType &this_handle = *this;
         HandleType &other_handle = other;
         this_handle = other_handle;
